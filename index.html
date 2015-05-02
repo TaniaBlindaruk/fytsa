@@ -4,10 +4,32 @@
     <meta charset="UTF-8">
     <title></title>
     <link rel="stylesheet" type="text/css" href="style/index.css">
+    <link rel="stylesheet" type="text/css" href="style/knockout.css">
 </head>
 <body>
-<header class="header">
+<header id="header" class="header">
 
 </header>
+<div class="table">
+    <div class="table-row">
+        <div id="left" class="left-bar">
+            <span data-bind="text:milisecond"></span>
+            <span data-bind="text:textCountEnable"></span>
+            <button class="start" data-bind="click:clickStart, text: textButton"> Старт </button>
+        </div>
+        <div id="content" class="content" >
+            <!--ko if: type()-->
+                <div class="circle" data-bind="clickCircle:{}, click:click"></div>
+                <div class="circle" data-bind="clickCircle:{}, click:click"></div>
+            <!--/ko-->
+        </div>
+    </div>
+</div>
+<script  src="js/vendor/jquery-2.1.1.js"></script>
+<script  src="js/vendor/knockout-3.2.0.js"></script>
+<script  src="js/app/index.js"></script>
+<script  src="js/app/RandomDistance.js"></script>
+<script  src="js/app/ViewModel.js"></script>
+
 </body>
 </html>
