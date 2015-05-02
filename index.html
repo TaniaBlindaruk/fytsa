@@ -5,6 +5,7 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="style/index.css">
     <link rel="stylesheet" type="text/css" href="style/knockout.css">
+    <link rel="stylesheet" type="text/css" href="style/settings.css">
 </head>
 <body>
 <header id="header" class="header">
@@ -13,14 +14,88 @@
 <div class="table">
     <div class="table-row">
         <div id="left" class="left-bar">
-            <span data-bind="text:milisecond"></span>
-            <span data-bind="text:textCountEnable"></span>
             <button class="start" data-bind="click:clickStart, text: textButton"> Старт </button>
+
+            <div class="settings-info">
+                <!--ko if: !type()-->
+                <div class="table">
+                    <div class="table-row">
+                        <span>Кількість експерементів</span>
+                        <input data-bind="value:count" class="input-value input-default" maxlength="3" type="text">
+                        <label>
+                            <!--<input  type="checkbox">рандом-->
+                        </label>
+                    </div>
+                    <div class="table-row">
+                        <span>Відстань між елементами</span>
+                        <input data-bind="value:distance" class="input-value input-default" maxlength="3" type="text">
+                        <label>
+                            <input   type="checkbox">рандом
+                        </label>
+                    </div>
+                    <div class="table-row">
+                        <span>Радіус фігури</span>
+                        <input data-bind="value:s" class="input-value input-default" maxlength="3" type="text">
+                        <label>
+                            <input   type="checkbox">рандом
+                        </label>
+                    </div>
+                </div>
+                <!--/ko-->
+                <!--ko if:type()-->
+                <div class="type2">
+                    <div class="table">
+                        <div class="table-row">
+                            <span>Кількість спроб</span>
+                            <span class="count" data-bind="text:textCountEnable()+'/'+count()"></span>
+                        </div>
+                        <div class="table-row">
+                            <span>Останій час</span>
+                            <span data-bind="text:milisecond()"></span>
+                        </div>
+                    </div>
+                    <!--<div class="table">-->
+                        <!--<div class="table-row thead">-->
+                            <!--<span>№</span>-->
+                            <!--<span>Відстань</span>-->
+                            <!--<span>Розмір</span>-->
+                            <!--<span>Час</span>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;ko foreach:globalMas() &ndash;&gt;-->
+                        <!--<div class="table-row">-->
+                            <!--<span data-bind="text:id">№</span>-->
+                            <!--<span data-bind="text:Distance">Відстань</span>-->
+                            <!--<span data-bind="text:s">Розмір</span>-->
+                            <!--<span data-bind="text:time">Час</span>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;/ko&ndash;&gt;-->
+                    <!--</div>-->
+                </div>
+                <!--/ko-->
+            </div>
         </div>
         <div id="content" class="content" >
             <!--ko if: type()-->
                 <div class="circle" data-bind="clickCircle:{}, click:click"></div>
                 <div class="circle" data-bind="clickCircle:{}, click:click"></div>
+            <!--/ko-->
+            <!--ko if: !type()-->
+            <div class="table result">
+                <div class="table-row thead">
+                    <span>№</span>
+                    <span>Відстань</span>
+                    <span>Розмір</span>
+                    <span>Час</span>
+                </div>
+                <!--ko foreach:globalMas() -->
+                <div class="table-row">
+                    <span data-bind="text:id">№</span>
+                    <span data-bind="text:Distance">Відстань</span>
+                    <span data-bind="text:s">Розмір</span>
+                    <span data-bind="text:time">Час</span>
+                </div>
+                <!--/ko-->
+            </div>
             <!--/ko-->
         </div>
     </div>

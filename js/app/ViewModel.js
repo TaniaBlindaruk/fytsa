@@ -8,10 +8,8 @@ var myViewModel = function () {
     self.count = ko.observable(40);
     self.distance = ko.observable(50);
     self.s = ko.observable(100);
-    self.masTime = ko.observableArray([]);
-    self.masDistance = ko.observableArray([]);
-    self.masS = ko.observableArray([]);
     self.countCircle = ko.observable(2);
+    self.globalMas = ko.observableArray([]);
     self.clickStart = function () {
         self.type(!self.type());
     }
@@ -52,11 +50,18 @@ ko.bindingHandlers.clickCircle = {
                     clearInterval(idT);
                     randomDistance.setS(viewModel.s());
                     createElement(viewModel,randomDistance);
-                    viewModel.masTime.push(viewModel.milisecond());
-                    viewModel.masDistance.push(viewModel.distance());
-                    viewModel.masS.push(viewModel.s());
+                    viewModel.globalMas.push({
+                        id:viewModel.currentCount()+1,
+                        time: viewModel.milisecond(),
+                        Distance:viewModel.distance(),
+                        s:viewModel.s()
+                    });
                     viewModel.milisecond(0);
                     viewModel.countCircle(2);
+                    if((viewModel.currentCount()+1)===+viewModel.count()){
+                        viewModel.type(0);
+                        viewModel.countClick(0);
+                    }
                     break;
             }
         });
