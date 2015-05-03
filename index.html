@@ -28,9 +28,14 @@
                     </div>
                     <div class="table-row">
                         <span>Відстань між елементами</span>
+                        <!--ko ifnot:randomDistance-->
                         <input data-bind="value:distance" class="input-value input-default" maxlength="3" type="text">
+                        <!--/ko-->
+                        <!--ko if:randomDistance-->
+                        <input data-bind="value:distance" disabled class="input-value input-default" maxlength="3" type="text">
+                        <!--/ko-->
                         <label>
-                            <input   type="checkbox">рандом
+                            <input  data-bind="checked:randomDistance" type="checkbox">рандом
                         </label>
                     </div>
                     <div class="table-row">
@@ -104,6 +109,7 @@
 <script  src="js/vendor/knockout-3.2.0.js"></script>
 <script  src="js/app/index.js"></script>
 <script  src="js/app/RandomDistance.js"></script>
+<script  src="js/app/Fixed.js"></script>
 <script  src="js/app/ViewModel.js"></script>
 
 </body>
