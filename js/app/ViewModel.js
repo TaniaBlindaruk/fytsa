@@ -12,31 +12,31 @@ var myViewModel = function () {
     self.globalMas = ko.observableArray([]);
     self.clickStart = function () {
         self.type(!self.type());
-        if(self.type()){
+        if (self.type()) {
             var settingFigure = new SettingsFigure();
-            if(self.randomDistance()){
+            if (self.randomDistance()) {
                 settingFigure.setFunctionGetDistance(
-                    function(){
+                    function () {
                         return maxDistance();
                     }
                 );
-            }else{
+            } else {
                 settingFigure.setFunctionGetDistance(
-                    function(){
+                    function () {
                         return self.distance();
                     }
                 )
             }
 
-            if(self.randomRadius()){
+            if (self.randomRadius()) {
                 settingFigure.setFunctionGetS(
-                    function(){
-                        return getRandomInt(10,300);
+                    function () {
+                        return getRandomInt(10, 300);
                     }
                 );
-            }else{
+            } else {
                 settingFigure.setFunctionGetS(
-                    function(){
+                    function () {
                         return self.s();
                     }
                 );
@@ -59,7 +59,7 @@ var myViewModel = function () {
     }
     self.currentCount = ko.observable(0);
     self.textCountEnable = ko.computed(function () {
-        self.currentCount(parseInt(self.countClick()/2))
+        self.currentCount(parseInt(self.countClick() / 2))
         return self.currentCount();
     });
 }
@@ -70,7 +70,7 @@ ko.bindingHandlers.clickCircle = {
             $(element).css({
                 'display': 'none'
             })
-            switch (viewModel.countCircle()){
+            switch (viewModel.countCircle()) {
                 case 2:
                     idT = setInterval(function () {
                         viewModel.milisecond(viewModel.milisecond() + 1);
@@ -79,16 +79,16 @@ ko.bindingHandlers.clickCircle = {
                     break;
                 case 1:
                     clearInterval(idT);
-                    createElement(viewModel,new SettingsFigure());
+                    createElement(viewModel, new SettingsFigure());
                     viewModel.globalMas.push({
-                        id:viewModel.currentCount()+1,
+                        id: viewModel.currentCount() + 1,
                         time: viewModel.milisecond(),
-                        Distance:viewModel.distance(),
-                        s:viewModel.s()
+                        Distance: viewModel.distance(),
+                        s: viewModel.s()
                     });
                     viewModel.milisecond(0);
                     viewModel.countCircle(2);
-                    if((viewModel.currentCount()+1)===+viewModel.count()){
+                    if ((viewModel.currentCount() + 1) === +viewModel.count()) {
                         viewModel.type(0);
                         viewModel.countClick(0);
                     }
@@ -97,65 +97,66 @@ ko.bindingHandlers.clickCircle = {
         });
     },
     update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-        if(viewModel.type()){
-            window.app.tagJquery.firstElement=$($('.circle')[0]);
-            window.app.tagJquery.twoElement=$($('.circle')[1]);
+        if (viewModel.type()) {
+            window.app.tagJquery.firstElement = $($('.circle')[0]);
+            window.app.tagJquery.twoElement = $($('.circle')[1]);
         }
 
     }
 };
 
-function createElement(viewModel,classProperties) {
+function createElement(viewModel, classProperties) {
     var contentWidth = parseInt(app.tagJquery.content.css('width'));
-    var firsLeft = getRandomInt(0,parseInt(app.tagJquery.content.css('width')));
-    var firsTop = getRandomInt(0,parseInt(app.tagJquery.content.css('height')));
-    var distance  = classProperties.getDistance();
-    var twoWidth = getRandomInt(10,distance);
-    var twoHeight = Math.sqrt(Math.pow(distance,2)-Math.pow(twoWidth,2));
-    var widthF = parseInt(app.tagJquery.firstElement.css('width'))/2;
-    var heightF = parseInt(app.tagJquery.firstElement.css('height'))/2;
+    var firsLeft = getRandomInt(0, parseInt(app.tagJquery.content.css('width')));
+    var firsTop = getRandomInt(0, parseInt(app.tagJquery.content.css('height')));
+    var distance = classProperties.getDistance();
+    var twoWidth = getRandomInt(10, distance);
+    var twoHeight = Math.sqrt(Math.pow(distance, 2) - Math.pow(twoWidth, 2));
+    var widthF = parseInt(app.tagJquery.firstElement.css('width')) / 2;
+    var heightF = parseInt(app.tagJquery.firstElement.css('height')) / 2;
 
-    while((twoWidth+firsLeft+widthF)>contentWidth){
+    while ((twoWidth + firsLeft + widthF) > contentWidth) {
         twoWidth = -twoWidth;
-        if(twoWidth+firsLeft+widthF<100){
-            twoWidth=100;
+        if (twoWidth + firsLeft + widthF < 100) {
+            twoWidth = 100;
         }
-    };
-    while((twoHeight+firsTop+heightF)> parseInt(app.tagJquery.content.css('height'))){
+    }
+    ;
+    while ((twoHeight + firsTop + heightF) > parseInt(app.tagJquery.content.css('height'))) {
         twoHeight = -twoHeight;
-        if(twoHeight+firsTop+heightF<100){
-            twoHeight=100;
+        if (twoHeight + firsTop + heightF < 100) {
+            twoHeight = 100;
         }
     }
     var h = classProperties.getS();
     viewModel.s(h);
     viewModel.distance(distance);
     app.tagJquery.firstElement.css({
-        'width':h,
-        'height':h,
-        'left':firsLeft,
-        'top':firsTop,
-        'display':'block'
+        'width': h,
+        'height': h,
+        'left': firsLeft,
+        'top': firsTop,
+        'display': 'block'
     });
     app.tagJquery.twoElement.css({
-        'width':h,
-        'height':h,
-        'left':twoWidth+firsLeft,
-        'top':twoHeight+firsTop,
-        'display':'block'
+        'width': h,
+        'height': h,
+        'left': twoWidth + firsLeft,
+        'top': twoHeight + firsTop,
+        'display': 'block'
     });
 }
 $(document).ready(function () {
-    window.app={
-        tagName:{
-            leftBar:'#left',
+    window.app = {
+        tagName: {
+            leftBar: '#left',
             content: '#content',
             header: '#header'
         },
-        tagClass:{
-            element:'.circle'
+        tagClass: {
+            element: '.circle'
         },
-        tagJquery:{
+        tagJquery: {
             firstElement: $($('.circle')[0]),
             twoElement: $($('.circle')[1]),
             header: $('#header'),
