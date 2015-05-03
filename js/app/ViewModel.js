@@ -12,6 +12,36 @@ var myViewModel = function () {
     self.globalMas = ko.observableArray([]);
     self.clickStart = function () {
         self.type(!self.type());
+        if(self.type()){
+            var settingFigure = new SettingsFigure();
+            if(self.randomDistance()){
+                settingFigure.setFunctionGetDistance(
+                    function(){
+                        return maxDistance();
+                    }
+                );
+            }else{
+                settingFigure.setFunctionGetDistance(
+                    function(){
+                        return self.distance();
+                    }
+                )
+            }
+
+            if(self.randomRadius()){
+                settingFigure.setFunctionGetS(
+                    function(){
+                        return getRandomInt(10,300);
+                    }
+                );
+            }else{
+                settingFigure.setFunctionGetS(
+                    function(){
+                        return self.s();
+                    }
+                );
+            }
+        }
     }
     self.randomDistance = ko.observable(true);
     self.randomRadius = ko.observable(false);
@@ -36,10 +66,6 @@ var myViewModel = function () {
 var idT;
 ko.bindingHandlers.clickCircle = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-        var randomDistance = new RandonDistance(20);
-        var fixed = new Fixed(20,20);
-        var fullRandom = new FullRandom();
-        var randomRadius = new RandomRadius(20)
         $(element).click(function () {
             $(element).css({
                 'display': 'none'
@@ -53,19 +79,7 @@ ko.bindingHandlers.clickCircle = {
                     break;
                 case 1:
                     clearInterval(idT);
-                    if(viewModel.randomDistance()&& !viewModel.randomRadius()) {
-                        randomDistance.setS(viewModel.s());
-                        createElement(viewModel, randomDistance);
-                    }else if(!viewModel.randomDistance() && !viewModel.randomRadius()){
-                        fixed.setS(viewModel.s());
-                        fixed.setDistance(viewModel.distance());
-                        createElement(viewModel, fixed);
-                    }else if(viewModel.randomDistance()&& viewModel.randomRadius()){
-                        createElement(viewModel, fullRandom);
-                    }else if(!viewModel.randomDistance() && viewModel.randomRadius()){
-                        randomRadius.setDistance(viewModel.distance());
-                        createElement(viewModel, randomRadius);
-                    }
+                    createElement(viewModel,new SettingsFigure());
                     viewModel.globalMas.push({
                         id:viewModel.currentCount()+1,
                         time: viewModel.milisecond(),
