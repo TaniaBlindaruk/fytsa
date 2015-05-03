@@ -14,6 +14,7 @@ var myViewModel = function () {
         self.type(!self.type());
     }
     self.randomDistance = ko.observable(true);
+    self.randomRadius = ko.observable(false);
     self.milisecond = ko.observable(0);
     self.textButton = ko.computed(function () {
         if (self.type()) {
@@ -37,6 +38,8 @@ ko.bindingHandlers.clickCircle = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
         var randomDistance = new RandonDistance(20);
         var fixed = new Fixed(20,20);
+        var fullRandom = new FullRandom();
+        var randomRadius = new RandomRadius(20)
         $(element).click(function () {
             $(element).css({
                 'display': 'none'
@@ -50,13 +53,18 @@ ko.bindingHandlers.clickCircle = {
                     break;
                 case 1:
                     clearInterval(idT);
-                    if(viewModel.randomDistance()) {
+                    if(viewModel.randomDistance()&& !viewModel.randomRadius()) {
                         randomDistance.setS(viewModel.s());
                         createElement(viewModel, randomDistance);
-                    }else if(!viewModel.randomDistance()){
+                    }else if(!viewModel.randomDistance() && !viewModel.randomRadius()){
                         fixed.setS(viewModel.s());
                         fixed.setDistance(viewModel.distance());
                         createElement(viewModel, fixed);
+                    }else if(viewModel.randomDistance()&& viewModel.randomRadius()){
+                        createElement(viewModel, fullRandom);
+                    }else if(!viewModel.randomDistance() && viewModel.randomRadius()){
+                        randomRadius.setDistance(viewModel.distance());
+                        createElement(viewModel, randomRadius);
                     }
                     viewModel.globalMas.push({
                         id:viewModel.currentCount()+1,
@@ -105,7 +113,8 @@ function createElement(viewModel,classProperties) {
             twoHeight=100;
         }
     }
-    var h = viewModel.s();
+    var h = classProperties.getS();
+    viewModel.s(h);
     viewModel.distance(distance);
     app.tagJquery.firstElement.css({
         'width':h,
