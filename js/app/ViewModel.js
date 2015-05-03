@@ -13,6 +13,7 @@ var myViewModel = function () {
     self.clickStart = function () {
         self.type(!self.type());
     }
+    self.randomDistance = ko.observable(true);
     self.milisecond = ko.observable(0);
     self.textButton = ko.computed(function () {
         if (self.type()) {
@@ -35,6 +36,7 @@ var idT;
 ko.bindingHandlers.clickCircle = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
         var randomDistance = new RandonDistance(20);
+        var fixed = new Fixed(20,20);
         $(element).click(function () {
             $(element).css({
                 'display': 'none'
@@ -48,8 +50,14 @@ ko.bindingHandlers.clickCircle = {
                     break;
                 case 1:
                     clearInterval(idT);
-                    randomDistance.setS(viewModel.s());
-                    createElement(viewModel,randomDistance);
+                    if(viewModel.randomDistance()) {
+                        randomDistance.setS(viewModel.s());
+                        createElement(viewModel, randomDistance);
+                    }else if(!viewModel.randomDistance()){
+                        fixed.setS(viewModel.s());
+                        fixed.setDistance(viewModel.distance());
+                        createElement(viewModel, fixed);
+                    }
                     viewModel.globalMas.push({
                         id:viewModel.currentCount()+1,
                         time: viewModel.milisecond(),
