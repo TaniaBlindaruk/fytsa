@@ -39,6 +39,7 @@ ko.bindingHandlers.clickCircle = {
         var randomDistance = new RandonDistance(20);
         var fixed = new Fixed(20,20);
         var fullRandom = new FullRandom();
+        var randomRadius = new RandomRadius(20)
         $(element).click(function () {
             $(element).css({
                 'display': 'none'
@@ -61,6 +62,9 @@ ko.bindingHandlers.clickCircle = {
                         createElement(viewModel, fixed);
                     }else if(viewModel.randomDistance()&& viewModel.randomRadius()){
                         createElement(viewModel, fullRandom);
+                    }else if(!viewModel.randomDistance() && viewModel.randomRadius()){
+                        randomRadius.setDistance(viewModel.distance());
+                        createElement(viewModel, randomRadius);
                     }
                     viewModel.globalMas.push({
                         id:viewModel.currentCount()+1,
@@ -110,6 +114,7 @@ function createElement(viewModel,classProperties) {
         }
     }
     var h = classProperties.getS();
+    viewModel.s(h);
     viewModel.distance(distance);
     app.tagJquery.firstElement.css({
         'width':h,
