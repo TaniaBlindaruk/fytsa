@@ -40,9 +40,14 @@
                     </div>
                     <div class="table-row">
                         <span>Радіус фігури</span>
+                        <!--ko ifnot:randomRadius-->
                         <input data-bind="value:s" class="input-value input-default" maxlength="3" type="text">
+                        <!--/ko-->
+                        <!--ko if:randomRadius-->
+                        <input data-bind="value:s" disabled class="input-value input-default" maxlength="3" type="text">
+                        <!--/ko-->
                         <label>
-                            <input   type="checkbox">рандом
+                            <input data-bind="checked:randomRadius"  type="checkbox">рандом
                         </label>
                     </div>
                 </div>
@@ -108,8 +113,9 @@
 <script  src="js/vendor/jquery-2.1.1.js"></script>
 <script  src="js/vendor/knockout-3.2.0.js"></script>
 <script  src="js/app/index.js"></script>
-<script  src="js/app/RandomDistance.js"></script>
-<script  src="js/app/Fixed.js"></script>
+<script  src="js/app/class/RandomDistance.js"></script>
+<script  src="js/app/class/Fixed.js"></script>
+<script  src="js/app/class/FullRandom.js"></script>
 <script  src="js/app/ViewModel.js"></script>
 
 </body>
