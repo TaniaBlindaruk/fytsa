@@ -43,7 +43,7 @@ var myViewModel = function () {
             }
         }
     }
-    self.randomDistance = ko.observable(true);
+    self.randomDistance = ko.observable(false);
     self.randomRadius = ko.observable(false);
     self.milisecond = ko.observable(0);
     self.textButton = ko.computed(function () {
@@ -107,29 +107,31 @@ ko.bindingHandlers.clickCircle = {
 
 function createElement(viewModel, classProperties) {
     var contentWidth = parseInt(app.tagJquery.content.css('width'));
-    var firsLeft = getRandomInt(0, parseInt(app.tagJquery.content.css('width')));
-    var firsTop = getRandomInt(0, parseInt(app.tagJquery.content.css('height')));
-    var distance = classProperties.getDistance();
-    var h = classProperties.getS();
-    var distance1 =+distance+h;
-    var twoWidth = getRandomInt(10, distance1);
-    var twoHeight = Math.sqrt(Math.pow(distance1, 2) - Math.pow(twoWidth, 2));
-    var widthF = parseInt(app.tagJquery.firstElement.css('width')) / 2;
-    var heightF = parseInt(app.tagJquery.firstElement.css('height')) / 2;
-
-    while ((twoWidth + firsLeft + widthF) > contentWidth) {
-        twoWidth = -twoWidth;
-        if (twoWidth + firsLeft + widthF < 100) {
-            //twoWidth = 100;
-        }
-    }
-    ;
-    while ((twoHeight + firsTop + heightF) > parseInt(app.tagJquery.content.css('height'))) {
-        twoHeight = -twoHeight;
-        if (twoHeight + firsTop + heightF < 100) {
-            //twoHeight = 100;
-        }
-    }
+    var contentHeight = parseInt(app.tagJquery.content.css('height'));
+    do {
+        var firsLeft = getRandomInt(0, parseInt(app.tagJquery.content.css('width')));
+        var firsTop = getRandomInt(0, parseInt(app.tagJquery.content.css('height')));
+        var distance = classProperties.getDistance();
+        var h = classProperties.getS();
+        var distance1 = +distance + h;
+        var twoWidth = getRandomInt(10, distance1);
+        var twoHeight = Math.sqrt(Math.pow(distance1, 2) - Math.pow(twoWidth, 2));
+        var widthF = h//parseInt(app.tagJquery.firstElement.css('width')) ;
+        var heightF = h//parseInt(app.tagJquery.firstElement.css('height'));
+        if ((twoWidth + firsLeft + widthF) > contentWidth) {
+            twoWidth = -twoWidth;
+            //alert(twoWidth + firsLeft + widthF);
+        };
+        if ((twoHeight + firsTop + heightF) > parseInt(app.tagJquery.content.css('height'))) {
+            twoHeight = -twoHeight;
+        };
+        debugger;
+    } while (firsLeft + widthF > contentWidth ||
+    firsTop + heightF > contentHeight ||
+    firsLeft + widthF + twoWidth > contentWidth ||
+    firsLeft  + twoWidth < 0 ||
+    firsTop + heightF + twoHeight > contentHeight ||
+    firsTop  + twoHeight < 0);
 
     viewModel.s(h);
     viewModel.distance(distance);
