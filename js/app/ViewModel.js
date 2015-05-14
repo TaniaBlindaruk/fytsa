@@ -10,6 +10,8 @@ var myViewModel = function () {
     self.s = ko.observable(100);
     self.countCircle = ko.observable(2);
     self.globalMas = ko.observableArray([]);
+    self.masDistanceT =[];
+    self.masST =[];
     self.clickStart = function () {
         self.type(!self.type());
         if (self.type()) {
@@ -62,8 +64,25 @@ var myViewModel = function () {
         self.currentCount(parseInt(self.countClick() / 2))
         return self.currentCount();
     });
+
 }
 var idT;
+ko.bindingHandlers.drawGraph= {
+    update: function(element,valueAccessor){
+        $.jqplot($(element).attr('id'), [valueAccessor()], {
+            series:[{showMarker:false}],
+            axes:{
+                xaxis:{
+                    label:'N'
+                },
+                yaxis:{
+                    label:'t'
+                }
+            }
+        });
+    }
+
+}
 ko.bindingHandlers.clickCircle = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
         $(element).click(function () {
@@ -80,6 +99,14 @@ ko.bindingHandlers.clickCircle = {
                 case 1:
                     clearInterval(idT);
                     createElement(viewModel, new SettingsFigure());
+                    viewModel.masDistanceT.push([
+                        viewModel.milisecond(),
+                        viewModel.distance()
+                    ]);
+                    viewModel.masST.push([
+                        viewModel.milisecond(),
+                        viewModel.s(),
+                    ]);
                     viewModel.globalMas.push({
                         id: viewModel.currentCount() + 1,
                         time: viewModel.milisecond(),
@@ -125,7 +152,6 @@ function createElement(viewModel, classProperties) {
         if ((twoHeight + firsTop + heightF) > parseInt(app.tagJquery.content.css('height'))) {
             twoHeight = -twoHeight;
         };
-        debugger;
     } while (firsLeft + widthF > contentWidth ||
     firsTop + heightF > contentHeight ||
     firsLeft + widthF + twoWidth > contentWidth ||
