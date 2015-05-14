@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="style/index.css">
     <link rel="stylesheet" type="text/css" href="style/knockout.css">
     <link rel="stylesheet" type="text/css" href="style/settings.css">
+    <link rel="stylesheet" type="text/css" href="js/vendor/jqplot/jquery.jqplot.min.css">
 </head>
 <body>
 <header id="header" class="header">
@@ -75,8 +76,12 @@
             <!--/ko-->
             <!--ko if: !type()-->
             <div class="table result">
+                <h2 style="text-align: center">Залежність Часу від Дистанції (N = distance)</h2>
+                <div data-bind="drawGraph: masDistanceT" style="width: 700px" id = 'chart1'></div>
+                <h2 style="text-align: center">Залежність Часу від S (N=S)</h2>
+                <div data-bind="drawGraph: masST" style="width: 700px" id = 'chart2'></div>
                 <div class="table-row thead">
-                    <span>№</span>
+                    <span >№</span>
                     <span>Відстань</span>
                     <span>Розмір</span>
                     <span>Час</span>
@@ -96,9 +101,36 @@
 </div>
 <script  src="js/vendor/jquery-2.1.1.js"></script>
 <script  src="js/vendor/knockout-3.2.0.js"></script>
+
+<script src="js/vendor/jqplot/jquery.jqplot.min.js"></script>
+<script class="include" type="text/javascript" src="js/vendor/jqplot/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script class="include" type="text/javascript" src="js/vendor/jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+
 <script  src="js/app/index.js"></script>
 <script  src="js/app/SettingsFigure.js"></script>
 <script  src="js/app/ViewModel.js"></script>
+
+<script>
+    $(document).ready(function(){
+        var cosPoints = [];
+        for (var i=0; i<2*Math.PI; i+=0.1){
+            cosPoints.push([i, Math.cos(i)]);
+        }
+
+        debugger;
+        var plot1 = $.jqplot('chart2', [cosPoints], {
+            series:[{showMarker:false}],
+            axes:{
+                xaxis:{
+                    label:'Angle (radians)'
+                },
+                yaxis:{
+                    label:'Cosine'
+                }
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
